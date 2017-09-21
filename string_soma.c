@@ -42,7 +42,81 @@ int soma_string(char *string_entrada){
             }
         }
     }
-    
+    numero = 0;
+    /**
+    * Agora, iremos fazer a soma de verdade. Dentro deste while, temos alguns if's que irão analizar
+    * caracter por caracter da string. O while de dentro percorre o vetor de números para ver se o char é um numero.
+    * A lógica utilizada aqui foi a seguinte: Le-se um char por vez e caso seja um número já faz a soma. 
+    * Caso Lermos outro número, acrescentamos a ordem de significancia e subtraimos o que tinha anteriormente. Fazemos isso
+    * com o contador chamado número.
+    * Com as vírgulas, lêmos elas e acionamos a flag vírgula, além de incrementarmos o conta_virgulaque irá controlar
+    * caso haja duas em seguida, ou mais de 3 em uma linha, ou outras anormalidades. Com caracteres especiais, nenhum é 
+    * aceito, a menos que seja o \n ou a vírgula, ou caso formos mudar o delimitador.
+    **/
+    while(i<strlen(string_entrada)){ //percorre a string de entrada
+        while(j<strlen(numeros)){ // percorre a string que contém os números
+
+            if(string_entrada[i]==numeros[j] && numero == 0){ //caso seja o primeiro número lido
+
+                algarismo[2] = 0; //O alarismo das centenas é zero
+                algarismo[1] = 0; //O algarismo das dezenas é zero
+                algarismo[0] = j; //O algarismo das unidades recebe o valor atual de j
+                numero = 1; //O contador de números fica sendo 1
+                virgula = 0; //A flag virgula continua 0
+
+            }
+            else if(string_entrada[i]==numeros[j] && numero == 1){ //caso seja o segundo numero em seguida
+                soma = soma - algarismo[0]; // Subtraimos da soma o que tinha antes
+                algarismo[2] = 0; //O algarismo das centenas ainda é zero
+                algarismo[1] = algarismo[0]; //As dezenas será o que era unidades 
+                algarismo[0] = j; //A unidade será o j
+                numero = 2; //Contador de numeros será 2
+                virgula = 0; // A flag vírgula ainda é 0
+            }
+            else if(string_entrada[i]==numeros[j] && numero == 2){//caso seja o terceiro numero em seguida
+                soma = soma - 10*algarismo[1] - algarismo[0]; // Subtraimos da soma o que tinha antes
+                algarismo[2] = algarismo[1]; // A centena recebe o que tinha na dezena
+                algarismo[1] = algarismo[0]; //A dezena recebe o que tinha na unidade
+                algarismo[0] = j; // A unidade recebe o valor de j
+                numero = 3; //Contador de números agora é 3 (não pode passar disso pois o número maz aceito é 999)
+                virgula = 0; // A flag vírgula é 0
+            }
+            else if(string_entrada[i]==numeros[j] && numero == 3){ //caso seja o quarto (ou mais) numero em seguida
+                // Neste caso, houve um erro. Devemos retirar o número que tinha anteriormente e desconsiderar este número.
+                soma = soma - 100*algarismo[2] - 10*algarismo[1] - algarismo[0]; //A soma é subtraida do número todo que tinha
+                algarismo[2] = 0; //Centena é zerada
+                algarismo[1] = 0; //Dezena é zerada
+                algarismo[0] = 0; //Unidade é zerada
+                numero = 3; //O contador de números continua 3 para que caso o proximo seja número, entre neste if de novo.
+            }
+            else if(string_entrada[i]==',' && i == (strlen(string_entrada)-3)) return -1; //caso a virgula for a ultima coisa digitada
+            else if(string_entrada[i]==',' && !virgula && i != 0){ //caso o char for virgula e o anterior não e não for o primeiro char
+                conta_virgula++; //O contador de virgula é incrementado
+                virgula = 1; //Flag virgula é levantada
+                numero = 0; //Flag número é zerada
+                i++; //Passa para o proximo char
+            }
+
+            else if(string_entrada[i] == '\\' && string_entrada[i+1] == 'n' ) { //caso o char lido for \n
+                virgula = 0;
+                conta_virgula = 0; //O contador de vírgula é zerado, pois é uma nova linha
+                numero = 0; // contador de número é zerado
+                algarismo[2] = 0; //Centena zerada
+                algarismo[1] = 0; //Dezena zerada
+                algarismo[0] = 0; //Unidade zerada
+                i += 2; //Pulamos 2 chars para continuar a leitura
+                continue;
+            }
+            else if(string_entrada[i] == ',' && virgula) return -1; //caso sejam 2 virgulas consecutivas
+            else if (conta_virgula > 2) return -1; // caso tenha mais de 3 numeros para somar
+
+            j++; //Lêmos o próximo número no vetor numeros
+
+        }
+        total = algarismo[2]*100 + algarismo[1]*10 + algarismo[0]; //Acumulamos a soma em total
+        soma = soma + total; // Somamos de fato
+        j=0; //Zeramos o j para começarmos a ver o vetor de numeros do zero
+        i++; //Passamos para o proximo char
 	}
 	return soma; // Retornamos por fim a soma
 
