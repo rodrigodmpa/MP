@@ -65,7 +65,60 @@ char* mudaDelimitador(char *string_entrada){
     char *string_entrada_nova; // Ponteiro para char que será a nova string
 
 
-    
+    /**
+    * Este if será o if principal. Caso a string entrada começar com //[ significa que o usuario está pedindo para redefinir
+    * o delimitador padrão para o que ele digitar. Para isso faremos o seguinte:
+    * Encontraremos qual o delimitador padrão que o usuario quer. Armazenaremos no ponteiro p.
+    * Em seguida, iremos retirar os caracteres iniciais da string de entrada que são: //[Delimit]. A string final ficará
+    * somente com os números e o novo delimitador.
+    * Após isso, iremos substituir o delimitador novo por virgulas: procuramos na string o delimitador, retiramos o primeiro
+    * caracter e modificamos a string nova, que será a saida. Apos isso, os outros chars serão ignorados na nova string.
+    **/
+    if (string_entrada[0] == '/' && string_entrada[1] == '/'){ // Caso a string começe com //
+
+        tam = 0; //Define o tamanho do delimitador inicialmente para 0
+        while (string_entrada[tam+3] != ']'){ // Conta o tamanho do delimitador
+            tam++;
+        }
+        if (string_entrada[4+tam] != '\\' && string_entrada[5+tam] != 'n'){ //Caso depois do delimitador não tenha um \n, retorna a propria entrada
+            return string_entrada;
+        }
+    p = (char *) malloc(tam*sizeof(char)); //Aloca espaço para a string que armazenará o delimitador
+    string_entrada_nova = (char *) malloc(strlen(string_entrada)*sizeof(char)); //Aloca espaço para a string nova, que será a saída
+
+    for(j=0;j<tam;j++){ // Armazena o delimitador em p
+        p[j] = string_entrada[j+3];
+    }
+
+    for(j=0;j<(strlen(string_entrada));j++){ //Retira os caracteres iniciais //[delim]\n
+        string_entrada[j] = string_entrada[j+tam+6];
+    }
+    printf("%s",string_entrada);
+        j = 0;
+        for(int k=0;k<strlen(string_entrada);k++){ //Este for percorrerá a string
+        if (string_entrada[k] == p[j] && !virgula){ //Comparação para ver se o char é igual ao delimitador
+                string_entrada_nova[k] = ','; //Troca o delimitador por virgula
+                virgula = 1; //Seta a flag virgula, para que não troque todos os chars por virgulas
+                if (j < tam-1) j++; //Incrementa j caso não estoure o tamanho tam
+                else if (j == tam-1) {
+                    virgula = 0;
+                    j = 0;
+                }
+        }
+        else if(string_entrada[k] == p[j] && virgula){ //Comparação para ver se o char é igual ao delimitador mas o antigo também
+            if (j < tam-1) j++; //Somente incremente j
+            else if (j == tam-1) {
+                j = 0;
+                virgula = 0;
+            }
+        }
+            
+        else if(string_entrada[k] != p[j]){ //Se não for igual ao delimitador, quer dizer que é numero, então armazena na nova
+            string_entrada_nova[k] = string_entrada[k];
+            virgula = 0;
+            j = 0;
+        }
+    }
     return string_entrada_nova; //Retorna a nova string, com virgulas
     }
     else{ //Se a string não comaça com //, somente retorna a propria string
