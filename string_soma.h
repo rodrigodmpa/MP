@@ -3,3 +3,4 @@
 
 int soma_string(char *);
 
+char* mudaDelimitador(char *);

@@ -20,3 +20,20 @@ TEST(soma_stringTest, SomasOks) {
   EXPECT_EQ(300, soma_string("100,100,100\\n"));
 }
 
+// Testes que o retorno deve ser -1
+TEST(soma_stringTest, SomasOks) {
+  
+
+  EXPECT_EQ(-1, soma_string("1,\\n"));
+  EXPECT_EQ(, soma_string(",2\\n"));
+  EXPECT_EQ(3, soma_string("1,,2\\n"));
+  EXPECT_EQ(5, soma_string(",\\n"));
+  EXPECT_EQ(10, soma_string("1;2\\n"));
+  EXPECT_EQ(2, soma_string("1,2 \\n"));
+  EXPECT_EQ(1000, soma_string("1,2"));
+  EXPECT_EQ(2, soma_string("1,2 "));
+  EXPECT_EQ(1998, soma_string("1,2,3,4\\n"));
+  EXPECT_EQ(300, soma_string("-1,-2\\n"));
+}
+
+//RUN_ALL_TESTS()

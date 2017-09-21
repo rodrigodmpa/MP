@@ -48,4 +48,27 @@ int soma_string(char *string_entrada){
 
 }
 
+/**
+* mudaDelimitador é a função que recebe uma string e retorna outra string.
+* A string retornada é a mesma caso a string inicial não começe com "//[" sem aspas. 
+* Caso a string inicial comece com "//[", a string de saida será a original, porém com o delimitador modificado 
+* para vírgulas, para que a função de cima consigue utilizá-la.
+* exemplo:  string_entrada: //[##]\n3##2##1
+*           string_entrada_nova: 3,2,1
+**/
+
+char* mudaDelimitador(char *string_entrada){
+    int j; //Contador para for
+    int tam = 0; //Variavel que armazena o tamanho do delimitador
+    char *p; // Ponteiro para char que será o delimitador
+    int virgula = 0; // Flag levantada quando o char lido for uma virgula
+    char *string_entrada_nova; // Ponteiro para char que será a nova string
+
+
+    
+    return string_entrada_nova; //Retorna a nova string, com virgulas
+    }
+    else{ //Se a string não comaça com //, somente retorna a propria string
+        return string_entrada;
+    }
 }
