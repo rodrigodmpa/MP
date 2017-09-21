@@ -45,5 +45,5 @@ int soma_string(char *string_entrada){
     
 	
 	return soma; // Retornamos por fim a soma
-}
+
 
