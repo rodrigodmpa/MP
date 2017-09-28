@@ -1,4 +1,4 @@
-Universidade de Brasília - 2017/2
+Universidade de Brasília - 2017
 Rodrigo Demetrio Palma
 
 
