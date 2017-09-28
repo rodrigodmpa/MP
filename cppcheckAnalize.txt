@@ -1,0 +1,5 @@
+Após utilizar o cppcheck --enable=warning, obtive alguns erros:
+
+No módulo string_soma.c tinha um memory leak, pois faltava um free de um ponteiro que eu usava, porém esse ponteiro não podia ser liberado visto que eu devia retorná-lo na função.
+
+No módulo testa_string_soma_stdin obtive o alerta: (warning) scanf() without field width limits can crash with huge input data. Porém para a aplicação utilizada não a riscos de um dado muito grande.
